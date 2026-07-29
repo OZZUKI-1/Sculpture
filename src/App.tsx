@@ -144,7 +144,7 @@ export default function App() {
       {/* ── Hero ── */}
       <section id="top" style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
         <img
-          src="https://images.unsplash.com/photo-1773761542225-90315d50ed34?w=1800&h=1200&fit=crop&auto=format&q=85"
+          src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1800&h=1200&fit=crop&auto=format&q=80"
           alt="Stone sculpture"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%', filter: 'brightness(0.52)' }}
         />
@@ -280,7 +280,7 @@ export default function App() {
             <div style={{ position: 'sticky', top: 100 }}>
               <div style={{ position: 'relative' }}>
                 <img
-                  src="https://images.unsplash.com/photo-1509115885002-e624537417ab?w=700&h=920&fit=crop&auto=format"
+                  src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=700&h=920&fit=crop&auto=format"
                   alt="Stone hand sculpture"
                   style={{ width: '100%', display: 'block', filter: 'grayscale(15%) contrast(1.05)' }}
                 />
@@ -314,6 +314,7 @@ export default function App() {
                 Commissions are accepted for private residences, gardens, and institutional collections. The process spans 4–12 months from initial consultation to installation. Pricing from £18,000.
               </p>
               <button
+                aria-label="Begin a commission conversation"
                 onClick={() => openInquiry(null)}
                 style={{ padding: '14px 32px', backgroundColor: C.stone, color: C.ink, fontSize: 10, letterSpacing: '0.2em', border: 'none', cursor: 'pointer', transition: 'opacity 0.5s' }}
                 onMouseEnter={e => (e.currentTarget.style.opacity = '0.82')}
@@ -350,7 +351,7 @@ export default function App() {
           <FadeIn>
             <div style={{ position: 'sticky', top: 100 }}>
               <img
-                src="https://images.unsplash.com/photo-1703294114049-f6ca7584e3bd?w=600&h=740&fit=crop&auto=format"
+                src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=740&fit=crop&auto=format"
                 alt="Artist at work"
                 style={{ width: '100%', display: 'block', filter: 'grayscale(10%)' }}
               />
@@ -634,6 +635,7 @@ function RotatingTestimonial() {
           {testimonials.map((_, i) => (
             <button
               key={i}
+              aria-label={`Go to testimonial ${i + 1}`}
               onClick={() => goTo(i)}
               style={{
                 width: i === idx ? 20 : 6, height: 6,
@@ -682,7 +684,7 @@ function InquiryForm({ target, onClose }: { target: any; onClose: () => void }) 
       <h3 style={{ fontFamily: "'Cormorant Display', serif", fontSize: 28, fontWeight: 300, margin: 0, marginBottom: 36 }}>
         {target ? target.name : 'Commission Enquiry'}
       </h3>
-      <form onSubmit={e => { e.preventDefault(); setSent(true) }} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <form onSubmit={e => { e.preventDefault(); /* TODO: backend integration point */ setSent(true) }} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
         <Field label="Full Name" type="text" value={form.name} onChange={v => setForm(p => ({ ...p, name: v }))} required />
         <Field label="Email" type="email" value={form.email} onChange={v => setForm(p => ({ ...p, email: v }))} required />
 
@@ -757,7 +759,7 @@ function ContactForm() {
     </div>
   )
   return (
-    <form onSubmit={e => { e.preventDefault(); setSent(true) }} style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+    <form onSubmit={e => { e.preventDefault(); /* TODO: backend integration point */ setSent(true) }} style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <Field label="Full Name" type="text" value={form.name} onChange={v => setForm(p => ({ ...p, name: v }))} required />
       <Field label="Email Address" type="email" value={form.email} onChange={v => setForm(p => ({ ...p, email: v }))} required />
       <div>
@@ -810,17 +812,53 @@ function Field({ label, type, value, onChange, required, placeholder }: { label:
 }
 
 function Modal({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
+  const dialogRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        onClose()
+        return
+      }
+
+      if (e.key === 'Tab' && dialogRef.current) {
+        const focusables = dialogRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])')
+        if (focusables.length === 0) {
+          e.preventDefault()
+          return
+        }
+
+        const first = focusables[0]
+        const last = focusables[focusables.length - 1]
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault()
+          last.focus()
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        }
+      }
+    }
+
     window.addEventListener('keydown', onKey)
+    dialogRef.current?.focus()
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose])
+
   return (
     <div
       style={{ position: 'fixed', inset: 0, zIndex: 200, backgroundColor: 'rgba(20,18,16,0.72)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 32, backdropFilter: 'blur(4px)' }}
       onClick={onClose}
     >
-      <div style={{ backgroundColor: C.stone, maxWidth: '92vw', overflow: 'hidden', animation: 'modalIn 0.4s cubic-bezier(0.25,0,0,1)' }} onClick={e => e.stopPropagation()}>
+      <div
+        ref={dialogRef}
+        tabIndex={-1}
+        role="dialog"
+        aria-modal="true"
+        style={{ backgroundColor: C.stone, maxWidth: '92vw', overflow: 'hidden', animation: 'modalIn 0.4s cubic-bezier(0.25,0,0,1)' }}
+        onClick={e => e.stopPropagation()}
+      >
         {children}
       </div>
       <style>{`@keyframes modalIn { from { opacity:0; transform:translateY(20px) } to { opacity:1; transform:translateY(0) } }`}</style>
