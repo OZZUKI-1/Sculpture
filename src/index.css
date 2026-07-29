@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Display:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Cormorant+SC:wght@300;400;500&family=Inter:wght@300;400;500&display=swap');
+@import 'tailwindcss';
+
+:root {
+  --stone: #faf9f6;
+  --ink: #141210;
+  --dust: #e9e6df;
+  --warm-mid: #b8b0a0;
+  --warm-faint: #7a7268;
+  --amber: #8a6a3a;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--stone);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  font-weight: 300;
+}
+
+::-webkit-scrollbar { width: 0; background: transparent; }
+
+::selection {
+  background: var(--ink);
+  color: var(--stone);
+}
