@@ -1,15 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-
-/* ─── tokens ─────────────────────────────────────────────────────────── */
-const C = {
-  stone: '#faf9f6',
-  ink: '#141210',
-  dust: '#e9e6df',
-  mid: '#b8b0a0',
-  faint: '#7a7268',
-  amber: '#8a6a3a',
-  hairline: 'rgba(20,18,16,0.12)',
-}
+import { C, SPACE, TYPE } from './theme'
 
 /* ─── data ────────────────────────────────────────────────────────────── */
 const sculptures = [
@@ -120,7 +110,7 @@ export default function App() {
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 80,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '0 48px', height: 68,
+        padding: `0 ${SPACE.lg}px`, height: 68,
         backgroundColor: scrolled ? 'rgba(250,249,246,0.94)' : 'transparent',
         borderBottom: scrolled ? `1px solid ${C.hairline}` : '1px solid transparent',
         backdropFilter: scrolled ? 'blur(12px)' : 'none',
@@ -159,9 +149,9 @@ export default function App() {
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 20%', filter: 'brightness(0.52)' }}
         />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(20,18,16,0.1) 0%, rgba(20,18,16,0.55) 100%)' }} />
-        <div style={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '0 64px 80px' }}>
+        <div style={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: `0 ${SPACE.xl}px 80px` }}>
           <div style={{ maxWidth: 760 }}>
-            <div style={{ fontSize: 10, letterSpacing: '0.3em', color: 'rgba(250,249,246,0.55)', marginBottom: 28 }}>HAND-CARVED STONE · PIETRASANTA · EST. 1994</div>
+            <div style={{ fontSize: TYPE.labelCompact.fontSize, letterSpacing: TYPE.label.letterSpacing, color: 'rgba(250,249,246,0.55)', marginBottom: 28 }}>HAND-CARVED STONE · PIETRASANTA · EST. 1994</div>
             <h1 style={{ fontFamily: "'Cormorant Display', serif", fontSize: 'clamp(64px, 9vw, 124px)', fontWeight: 300, lineHeight: 0.92, letterSpacing: '-0.02em', color: C.stone, margin: 0, marginBottom: 36 }}>
               Carved<br /><em style={{ fontStyle: 'italic', fontWeight: 300 }}>from</em><br />silence
             </h1>
@@ -201,7 +191,7 @@ export default function App() {
       </div>
 
       {/* ── Collection ── */}
-      <section id="collection" style={{ padding: '112px 64px' }}>
+      <section id="collection" style={{ padding: `${SPACE.xxl}px ${SPACE.xl}px` }}>
         <FadeIn>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 64 }}>
             <div>
@@ -242,7 +232,7 @@ export default function App() {
       </FadeIn>
 
       {/* ── Process ── */}
-      <section id="process" style={{ padding: '112px 64px' }}>
+      <section id="process" style={{ padding: `${SPACE.xxl}px ${SPACE.xl}px` }}>
         <div style={{ display: 'grid', gridTemplateColumns: '5fr 4fr', gap: 96, alignItems: 'start' }}>
           <div>
             <FadeIn>
@@ -355,7 +345,7 @@ export default function App() {
       </section>
 
       {/* ── About ── */}
-      <section id="about" style={{ padding: '112px 64px' }}>
+      <section id="about" style={{ padding: `${SPACE.xxl}px ${SPACE.xl}px` }}>
         <div style={{ display: 'grid', gridTemplateColumns: '380px 1fr', gap: 80 }}>
           <FadeIn>
             <div style={{ position: 'sticky', top: 100 }}>
@@ -395,7 +385,7 @@ export default function App() {
       <RotatingTestimonial />
 
       {/* ── Contact ── */}
-      <section id="contact" style={{ padding: '112px 64px' }}>
+      <section id="contact" style={{ padding: `${SPACE.xxl}px ${SPACE.xl}px` }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 96 }}>
           <FadeIn>
             <div>
@@ -427,7 +417,7 @@ export default function App() {
       </section>
 
       {/* ── Footer ── */}
-      <footer style={{ borderTop: `1px solid ${C.hairline}`, backgroundColor: C.ink, padding: '48px 64px' }}>
+      <footer style={{ borderTop: `1px solid ${C.hairline}`, backgroundColor: C.ink, padding: `${SPACE.lg}px ${SPACE.xl}px` }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <div style={{ fontFamily: "'Cormorant SC', serif", fontSize: 18, color: C.stone, letterSpacing: '0.16em' }}>PETRA</div>
