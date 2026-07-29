@@ -421,7 +421,7 @@ export default function App() {
             </div>
           </FadeIn>
           <FadeIn delay={0.12}>
-            <ContactForm generic />
+            <ContactForm />
           </FadeIn>
         </div>
       </section>
@@ -757,7 +757,7 @@ function InquiryForm({ target, onClose }: { target: any; onClose: () => void }) 
 }
 
 /* ─── Contact form (page section) ────────────────────────────────────── */
-function ContactForm({ generic }: { generic?: boolean }) {
+function ContactForm() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [sent, setSent] = useState(false)
   if (sent) return (
