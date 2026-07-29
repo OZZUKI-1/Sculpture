@@ -1,3 +1,4 @@
+
 # PETRA — Stone Sculpture Website
 
 A single-page React application for selling hand-carved stone sculptures by Elena Marchetti, built with React 19 + Vite + Tailwind CSS v4.
